@@ -7,59 +7,45 @@ import { addItem } from "../utils/cartSlice";
 
 
 const ItemList = ({ items }) => {
-
-  
   const dispatch = useDispatch();
   const handleAddItem = (item) => {
     dispatch(addItem(item));
   };
   return (
-    <div>
+    <div className="item-list-container">
       {items.map((item) => (
         <div key={item?.card?.info?.id}>
-          <span className="flex justify-between items-center py-4 px-8 mt-4 bg-slate-200 shadow-lg w-6/12 mx-auto rounded-2xl">
-            <div className="flex-col w-9/12">
+          <span className="item-row">
+            <div className="item-details">
               <span>
                 {item?.card?.info?.itemAttribute?.vegClassifier === "VEG" ? (
-                  <img className="w-4 my-2" alt="VegLogo" src={vegLogo} />
+                  <img className="item-type-icon" alt="VegLogo" src={vegLogo} />
                 ) : (
-                  <img className="w-4 my-2" alt="NonVegLogo" src={nonVegLogo} />
+                  <img className="item-type-icon" alt="NonVegLogo" src={nonVegLogo} />
                 )}
               </span>
-              <h2 className="font-bold font-custom text-xl">
-                {item.card?.info?.name}
-              </h2>
-              <div className="flex gap-2 text-lg">
-                <h3 className="line-through text-slate-600">
-                  ₹
-                  {(item.card?.info?.price || item.card?.info?.defaultPrice) /
-                    100 +
-                    100}
+              <h2 className="item-name">{item.card?.info?.name}</h2>
+              <div className="item-price-row">
+                <h3 className="item-old-price">
+                  ₹{(item.card?.info?.price || item.card?.info?.defaultPrice) / 100 + 100}
                 </h3>
-                <h3 className="">
-                  ₹
-                  {(item.card?.info?.price || item.card?.info?.defaultPrice) /
-                    100}
+                <h3>
+                  ₹{(item.card?.info?.price || item.card?.info?.defaultPrice) / 100}
                 </h3>
               </div>
-              <p className="text-sm text-slate-600">
-                {item?.card?.info?.description}
-              </p>
+              <p className="item-description">{item?.card?.info?.description}</p>
             </div>
-            <div>
-              <div className="absolute">
-                <button
-                  className="rounded-2xl border-2 text-black border-slate-300 bg-slate-200 mx-10 my-16 p-2"
-                  onClick={() => handleAddItem(item)}
-                >
+            <div className="item-action">
+              <div className="item-img-wrapper">
+                <button className="btn-add" onClick={() => handleAddItem(item)}>
                   Add +{" "}
                 </button>
+                <img
+                  className="item-img"
+                  alt=" "
+                  src={ITEM_API + item?.card?.info?.imageId}
+                />
               </div>
-              <img
-                className="w-36 rounded-lg"
-                alt=" "
-                src={ITEM_API + item?.card?.info?.imageId}
-              />
             </div>
           </span>
         </div>
@@ -69,3 +55,4 @@ const ItemList = ({ items }) => {
 };
 
 export default ItemList;
+

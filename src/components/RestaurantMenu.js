@@ -28,28 +28,24 @@ const RestaurantMenu = () => {
     ) || [];
 
   return (
-    <div className="flex-col justify-center items-center m-4">
-      <div className="flex-col items-center justify-center mx-auto shadow-lg rounded-3xl bg-slate-200 p-4 w-5/12">
-        <h1 className="text-center text-3xl text-slate-700 font-bold my-2 rounded-2xl bg-slate-300 p-2">
-          {name}
-        </h1>
-        <div className="flex-col justify-center items-center">
-          <h2 className="text-center font-custom underline hover:underline-offset-4 transition-all ease duration-1000 text-lg rounded-2xl bg-slate-300 p-2">
-            {cuisines?.join(", ")}
-          </h2>
-          <h3 className="text-md my-2">{areaname}</h3>
-          <div className="flex justify-center items-center gap-4 bg-slate-300 rounded-2xl">
-            <h3 className="text-slate-800 text-md my-2">{avgRating}</h3>
-            <h3 className="text-md my-2">{totalRatingsString}</h3>
+    <div className="menu-page">
+      <div className="menu-header-card">
+        <h1 className="menu-restaurant-name">{name}</h1>
+        <div>
+          <h2 className="menu-cuisines">{cuisines?.join(", ")}</h2>
+          <h3 className="menu-area">{areaname}</h3>
+          <div className="menu-meta-row">
+            <h3 className="menu-meta-text">{avgRating}</h3>
+            <h3 className="menu-meta-text">{totalRatingsString}</h3>
             <h3>•</h3>
-            <h3 className="text-md my-2">{costForTwoMessage}</h3>
+            <h3 className="menu-meta-text">{costForTwoMessage}</h3>
           </div>
-          <h3 className="text-center text-md my-2 bg-slate-300 rounded-2xl p-2">
+          <h3 className="menu-delivery">
             Delivery in : {sla?.slaString}
           </h3>
         </div>
       </div>
-      <div className="flex-col items-center justify-center">
+      <div className="menu-categories">
         {categories && categories.length > 0 ? (
           categories.map((category, _index) => (
             <RestaurantCategory
