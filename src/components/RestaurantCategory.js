@@ -8,12 +8,9 @@ const RestaurantCategory = ({ info }) => {
     setshowIndex(!showIndex);
   };
   return (
-    <div className="my-12">
-      <div
-        className="flex justify-between bg-slate-400 w-6/12 py-10 px-8 mx-auto shadow-lg rounded-2xl"
-        onClick={handleClick}
-      >
-        <span className="font-bold text-lg ">
+    <div className="category-wrapper">
+      <div className="category-header" onClick={handleClick}>
+        <span className="category-title">
           {info.title} ({info.itemCards.length})
         </span>
         <span>🔻</span>
@@ -24,3 +21,4 @@ const RestaurantCategory = ({ info }) => {
 };
 
 export default RestaurantCategory;
+

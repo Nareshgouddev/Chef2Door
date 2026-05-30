@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { useState } from "react";
+import "./styles.css";
 import Header from "./components/Header";
 import Body from "./components/Body";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
@@ -15,52 +16,33 @@ import UserContext from "./utils/UserContext";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 
-
-
 const AppLayout = () => {
   const [userName, setUserName] = useState();
 
   return (
     <Provider store={appStore}>
-      <UserContext.Provider value={{ loggedInUser: userName, setLoggedInUser:setUserName }}>
+      <UserContext.Provider value={{ loggedInUser: userName, setLoggedInUser: setUserName }}>
         <div className="app">
           <Header />
           <Outlet />
-          <Footer/> 
+          <Footer />
         </div>
       </UserContext.Provider>
     </Provider>
   );
 };
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
     children: [
-      {
-        path: "/",
-        element: <Body />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/contact",
-        element: <Contact />,
-      },
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
-      {
-        path: "/restaurants/:resId",
-        element: <RestaurantMenu />,
-      },
-      {
-        path:"/Login",
-        element:<Login/>
-      },
+      { path: "/", element: <Body /> },
+      { path: "/about", element: <About /> },
+      { path: "/contact", element: <Contact /> },
+      { path: "/cart", element: <Cart /> },
+      { path: "/restaurants/:resId", element: <RestaurantMenu /> },
+      { path: "/Login", element: <Login /> },
     ],
     errorElement: <Error />,
   },
@@ -68,7 +50,3 @@ const appRouter = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={appRouter} />);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

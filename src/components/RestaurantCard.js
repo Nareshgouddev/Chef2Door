@@ -10,8 +10,6 @@ const RestaurantCard = (props) => {
   const OriginalCostForTwo = costForTwo.replace(/\D/g, "");
   const modifiedCostForTwo1 = parseFloat(OriginalCostForTwo);
   const modifiedCostForTwo2 = modifiedCostForTwo1 + 200;
-  // Extract deliveryTime from sla
-  // const { slaString } = sla;
 
   // Check if cuisines array is defined and not empty
   const cuisinesArray = info.cuisines || [];
@@ -19,33 +17,27 @@ const RestaurantCard = (props) => {
     cuisinesArray.length > 0 ? cuisinesArray.join(", ") : "Unknown";
 
   return (
-    <div className="flex-col justify-center items-center rounded-2xl bg-slate-200 w-[280px] h-[380px] pb-4 relative hover:scale-90 transition-all ease duration-500">
-      <div className="flex justify-center items-center rounded-lg">
+    <div className="restaurant-card">
+      <div className="restaurant-card-img-wrapper">
         <img
-          className="pt-4 px-4 w-[260px] h-[180px] object-cover"
+          className="restaurant-card-img"
           alt="res-images"
           src={CDN_URL + cloudinaryImageId}
         />
       </div>
-      <div className="flex-col justify-center px-4 mt-3">
-        <div className="flex justify-between font-bold text-sm">
-          <h3 className="font-custom font-bold text-gray-700 text-[18px] leading-6 mb-1">
-            {name}
-          </h3>
-          <h4 className="text-sm">{avgRating}⭐</h4>
+      <div className="restaurant-card-info">
+        <div className="restaurant-card-name-row">
+          <h3 className="restaurant-card-name">{name}</h3>
+          <h4 className="restaurant-card-rating">{avgRating}⭐</h4>
         </div>
-        <h4 className="flex justify-center items-center text-center text-slate-500 text-xs">
-          {cuisinesText}
-        </h4>
-        <div className="flex justify-between items-center px-4 py-2 mt-2">
-          <h4 className="text-[#3C3C4399] text-[14px] font-bold line-through">
+        <h4 className="restaurant-card-cuisines">{cuisinesText}</h4>
+        <div className="restaurant-card-price-row">
+          <h4 className="restaurant-card-old-price">
             ₹{modifiedCostForTwo2} for Two
           </h4>
-          <h4 className="text-[14px] font-bold text-[#0FB478]">{costForTwo}</h4>
+          <h4 className="restaurant-card-new-price">{costForTwo}</h4>
         </div>
-        <h4 className="flex justify-center items-center absolute bottom-5 left-[35%] text-xs">
-          📍{areaName}
-        </h4>
+        <h4 className="restaurant-card-area">📍{areaName}</h4>
       </div>
     </div>
   );
@@ -54,8 +46,8 @@ const RestaurantCard = (props) => {
 export const withPromotedLabel = (RestaurantCard) => {
   return (props) => {
     return (
-      <div>
-        <label className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs">Promoted</label>
+      <div className="promoted-wrapper">
+        <label className="promoted-label">Promoted</label>
         <RestaurantCard {...props} />
       </div>
     );
@@ -63,3 +55,4 @@ export const withPromotedLabel = (RestaurantCard) => {
 };
 
 export default RestaurantCard;
+

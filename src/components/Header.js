@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import "../input.css";
+import React, { useState, useContext } from "react";
+import "../styles.css";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import useOnlineStatus from "../utils/useOnlineStatus";
@@ -11,6 +11,7 @@ const Header = () => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const cartItems = useSelector((store) => store.cart.items);
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLoginLogout = () => {
     if (loggedInUser) {
@@ -21,37 +22,86 @@ const Header = () => {
   };
 
   return (
-    <div className="header-container sticky top-0 z-50 bg-white shadow-md">
-      <div className="flex justify-between items-center w-full h-20 px-8">
+    <div className="header">
+      <div className="header-main">
         {/* Logo Section */}
-        <div className="logo-container">
-          <Link to="/">
-            <img src={logo} alt="App logo" className="w-[90px] hover:opacity-80 transition-opacity" />
+        <div>
+          <Link to="/" className="logo-link">
+            <img src={logo} alt="App logo" className="logo-img" />
+            <span className="brand-name">
+              <span className="brand-dark">Chef</span>
+              <span className="brand-accent">2Door</span>
+            </span>
           </Link>
         </div>
 
-        {/* Navigation Links */}
-        <ul className="flex items-center space-x-6 font-semibold">
-          <li className="hover:bg-orange-500 hover:text-white rounded-md px-4 py-2 transition-all">
+        {/* Hamburger Button — visible on mobile */}
+        <button
+          className={`hamburger${mobileMenuOpen ? " open" : ""}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+        >
+          <span className="hamburger-bar" />
+          <span className="hamburger-bar" />
+          <span className="hamburger-bar" />
+        </button>
+
+        {/* Navigation Links — desktop */}
+        <ul className="nav-list">
+          <li className="nav-item">
             <Link to="/">Home</Link>
           </li>
-          <li className="hover:bg-orange-500 hover:text-white rounded-md px-4 py-2 transition-all">
+          <li className="nav-item">
             <Link to="/about">About Us</Link>
           </li>
-          <li className="hover:bg-orange-500 hover:text-white rounded-md px-4 py-2 transition-all">
+          <li className="nav-item">
             <Link to="/contact">Contact Us</Link>
           </li>
-          <li className="hover:bg-orange-500 hover:text-white rounded-md px-4 py-2 transition-all">
-            <Link to="/cart">
-              Cart ({cartItems.length} {cartItems.length === 1 ? "item" : "items"})
+          <li className="nav-item">
+            <Link to="/cart" className="nav-cart-link">
+              <svg className="cart-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+              </svg>
+              Cart
+              {cartItems.length > 0 && (
+                <span className="cart-badge">{cartItems.length}</span>
+              )}
             </Link>
           </li>
 
           {/* Login/Logout Button */}
           <li>
+            <button className="btn-login" onClick={handleLoginLogout}>
+              {loggedInUser ? "Logout" : "Login"}
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      <div className={`mobile-nav${mobileMenuOpen ? " open" : ""}`}>
+        <ul className="mobile-nav-list">
+          <li className="mobile-nav-item">
+            <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+          </li>
+          <li className="mobile-nav-item">
+            <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About Us</Link>
+          </li>
+          <li className="mobile-nav-item">
+            <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact Us</Link>
+          </li>
+          <li className="mobile-nav-item">
+            <Link to="/cart" onClick={() => setMobileMenuOpen(false)} className="mobile-cart-link">
+              🛒 Cart
+              {cartItems.length > 0 && (
+                <span className="cart-badge">{cartItems.length}</span>
+              )}
+            </Link>
+          </li>
+          <li>
             <button
-              className="bg-transparent text-gray-700 font-semibold px-4 py-2 rounded-md hover:bg-orange-500 hover:text-white transition-all"
-              onClick={handleLoginLogout}
+              className="btn-login-mobile"
+              onClick={() => { handleLoginLogout(); setMobileMenuOpen(false); }}
             >
               {loggedInUser ? "Logout" : "Login"}
             </button>
@@ -60,12 +110,15 @@ const Header = () => {
       </div>
 
       {/* Online Status and User Info Section */}
-      <div className="flex justify-between items-center bg-slate-100 px-8 py-2 text-gray-600 text-sm">
-        <div>Online Status: {onlineStatus ? "✅ Online" : "🚫 Offline"}</div>
+      <div className="status-bar">
+        <div className="status-bar-left">
+          <span className={`status-dot ${onlineStatus ? "online" : "offline"}`} />
+          {onlineStatus ? "Online" : "Offline"}
+        </div>
         {loggedInUser && (
-          <div className="text-right">
-            <Link className="text-blue-500 hover:underline">
-              Ordering for: {loggedInUser}
+          <div>
+            <Link className="ordering-for-link">
+              Ordering for: <span className="ordering-for-user">{loggedInUser}</span>
             </Link>
           </div>
         )}
